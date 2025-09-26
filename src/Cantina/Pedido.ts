@@ -26,7 +26,15 @@ export class Pedido{
     }
 
     adicionarItem(item: Item){
+        if(this.status === "Cancelado"){
+            throw new Error("Não é possível alterar um pedido cancelado")
+        }
         this.itens.push(item);
+        this.atualizarValorPagar();
+
+    }
+    removeItem(codigo: string){
+        this.itens = this.itens.filter(item => item.codigo !== codigo);
         this.atualizarValorPagar();
 
     }
