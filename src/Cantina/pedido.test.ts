@@ -24,17 +24,27 @@ test("deve alterar o status do pedido ao usar o método alterarStatus", ()=>{
 
     expect(ped.status).toBe("Em preparo")
 })
-// test("deve alterar o status para Cancelado ao chamar cancelarPedido", ()=>{
-//     const cli: Cliente = new Cliente;
-//     const item:Item = new Item()    
-//     const ped: Pedido = new Pedido(cli);
+test("deve alterar o status para Cancelado ao chamar cancelarPedido", ()=>{
+    const cli: Cliente = new Cliente;
+    const ped: Pedido = new Pedido(cli);
 
-//     ped.adicionarItem(item)
+    ped.alterarStatus("Cancelado");
 
-//     expect(ped.itens.length).toBe(1)
-// esta no lugar errado
-//})
+    expect(ped.status).toBe("Cancelado")
+})
 test("deve atualizar o valorPagar corretamente ao adicionar um item SEM desconto", ()=>{
+    const cli: Cliente = new Cliente;
+    const item1 = new Item();
+    item1.preco = 15; 
+    const ped: Pedido = new Pedido(cli)
+
+    ped.adicionarItem(item1);
+    
+
+    expect(ped.valorPagar).toBe(15)
+})
+//acho q ja esta feito
+test("deve atualizar o valorPagar corretamente ao adicionar múltiplos itens", ()=>{
     const cli: Cliente = new Cliente;
     const item1 = new Item();
     item1.preco = 15; 
@@ -48,23 +58,12 @@ test("deve atualizar o valorPagar corretamente ao adicionar um item SEM desconto
 test("deve atualizar o valorPagar corretamente ao adicionar um item COM desconto", ()=>{
     const cli: Cliente = new Cliente;
     const item1 = new Item();
-    item1.preco = 15; 
-    const ped: Pedido = new Pedido(cli)
-
-    ped.adicionarItem(item1);
-    
-
-    expect(ped.valorPagar).toBe(15)
-})
-test("deve atualizar o valorPagar corretamente ao adicionar múltiplos itens", ()=>{
-    const cli: Cliente = new Cliente;
-    const item1 = new Item();
     item1.preco = 100; 
     const ped: Pedido = new Pedido(cli)
 
 item1.aplicarDesconto(20)
     ped.adicionarItem(item1);
-   
+
     expect(ped.valorPagar).toBe(80)
 })
 
@@ -130,9 +129,29 @@ test("deve lançar um erro ao tentar adicionar um item a um pedido cancelado",()
     const pedido: Pedido = new Pedido(cliente);
     
     pedido.cancelarPedido()
-    pedido.adicionarItem(item1)
     
     expect(()=> pedido.adicionarItem(item1)).toThrow()
-}) //expect(()=>item1.aplicarDesconto(-10)).toThrow()
+})
+test("deve lançar um erro ao tentar remover um item de um pedido cancelado",()=>{
+    const item1:Item = new Item();
+    item1.preco = 40
+    item1.codigo = "1"
+    const cliente: Cliente = new Cliente();
+    const pedido: Pedido = new Pedido(cliente);
+    
+    pedido.cancelarPedido()
+    
+    expect(()=> pedido.removeItem("1")).toThrow()
+})
 })
 
+//mudar o nome e corrigir
+// test("SLA oq era pra fazer" ()=>{
+//     const cli: Cliente = new Cliente;
+//     const item:Item = new Item()    
+//     const ped: Pedido = new Pedido(cli);
+
+//     ped.adicionarItem(item)
+
+//     expect(ped.itens.length).toBe(1)
+// })
