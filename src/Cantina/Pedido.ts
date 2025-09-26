@@ -25,10 +25,20 @@ export class Pedido{
         this.status = status;
     }
 
-    adicionarItem(item: Item){
+    adicionarItem(item: Item) {
+        if (this.status === "Cancelado") {
+            throw new Error("Não é possível adicionar itens a um pedido cancelado.");
+        }
         this.itens.push(item);
         this.atualizarValorPagar();
-
+    }
+    
+    removeItem(codigo: string){
+        if (this.status === "Cancelado") {
+            throw new Error("Não é possível remover itens a um pedido cancelado.");
+        }
+        this.itens = this.itens.filter(item => item.codigo !== codigo);
+        this.atualizarValorPagar();
     }
 
     obterCliente(): Cliente{

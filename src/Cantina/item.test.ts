@@ -51,6 +51,20 @@ describe("Quando manipular o item", () => {
 
         expect(it.emPromocao()).toBe(true);
       })
+      
+//TDD2
+    test("deve lançar um erro ao tentar aplicar um desconto negativo", ()=>{
+        const item1:Item = new Item();
+        item1.preco = 20
+        
+        expect(()=>item1.aplicarDesconto(-10)).toThrow()
+    })
+    test("deve lançar um erro ao tentar aplicar um desconto maior que 100%", ()=>{
+        const item1:Item = new Item();
+        item1.preco = 20
+       
+        expect(()=>item1.aplicarDesconto(101)).toThrow()
+    })
 
 })
 
